@@ -1,12 +1,19 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { ScrollView, View, Text, TouchableOpacity } from 'react-native'
 import {
+    getDailyReminderValue,
     getMetricMetaInfo,
     timeToString
 } from '../utils/helpers'
 import UdaciSlider from './UdaciSlider'
 import UdaciStepper from './UdaciStepper'
 import DateHeader from './DateHeader'
+import { Ionicons } from '@expo/vector-icons'
+import TextButton from './TextButton'
+import {submitEntry, removeEntry} from "../utils/api"
+import {connect} from 'react-redux'
+import {addEntry} from "../actions"
+
 
 function SubmitButton ({onPress}) {
     return (
@@ -16,7 +23,7 @@ function SubmitButton ({onPress}) {
     )
 }
 
-export default class AddEntry extends Component {
+class AddEntry extends Component {
     state = {
         run: 0,
         bike: 0,
@@ -59,7 +66,9 @@ export default class AddEntry extends Component {
         const key = timeToString()
         const entry = this.state
 
-        // TODO: update redux
+        this.props.dispatch(addEntry({
+            [key]: entry
+        }))
 
         this.setState(() => ({
             run: 0,
@@ -68,18 +77,45 @@ export default class AddEntry extends Component {
             sleep: 0,
             eat: 0
         }))
+
         // TODO: navigate to home
 
-        // TODO: save to db
+        submitEntry({key, entry})
 
         // TODO: clear local notification
+    }
+
+    reset = () => {
+        const key = timeToString()
+
+        this.props.dispatch(addEntry({
+            [key]: getDailyReminderValue()
+        }))
+
+        // TODO: return to home
+
+        // TODO: update db
+
+        removeEntry(key)
     }
 
     render () {
         const metaInfo = getMetricMetaInfo()
 
+        if (this.props.alreadyLogged) {
+            return (
+                <View>
+                    <Ionicons name="md-happy" size={100} color={"black"}/>
+                    <Text>You already logged your information for today</Text>
+                    <TextButton onPress={this.reset}>
+                        Reset
+                    </TextButton>
+                </View>
+            )
+        }
+
         return (
-            <View>
+            <ScrollView>
                 <Text>{JSON.stringify(this.state)}</Text>
                 <DateHeader date={(new Date()).toLocaleDateString()}/>
                 {Object.keys(metaInfo).map((key) => {
@@ -103,7 +139,17 @@ export default class AddEntry extends Component {
                     )
                 })}
                 <SubmitButton onPress={this.submit}/>
-            </View>
+            </ScrollView>
         )
     }
 }
+
+function mapStateToProps (state) {
+    const key = timeToString()
+
+    return {
+        alreadyLogged: state[key] && typeof state[key].today === 'undefined'
+    }
+}
+
+export default connect(mapStateToProps)(AddEntry)
