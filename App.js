@@ -1,21 +1,34 @@
 import React from 'react'
-import {View, ScrollView} from 'react-native'
-import AddEntry from './components/AddEntry'
-import History from './components/History'
+import {
+    StatusBar,
+    View
+} from 'react-native'
 import {createStore} from 'redux'
 import {Provider} from 'react-redux'
 import reducer from './reducers'
+import {purple} from "./utils/colors";
+import TabNavigation from './components/TabNavigation'
+import {Constants} from 'expo'
 
-export default class App extends React.Component {
+function UdaciStatusBar({backgroundColor, ...props}) {
+    return (
+        <View style={{backgroundColor, height: Constants.statusBarHeight}}>
+            <StatusBar translucent backgroundColor={backgroundColor} {...props}/>
+        </View>
+    )
+}
+
+class App extends React.Component {
     render() {
         return (
             <Provider store={createStore(reducer)}>
-                <View style={{height: 20}}/>
-                <ScrollView style={{flex: 1}}>
-                    <AddEntry/>
-                    <History/>
-                </ScrollView>
+                <UdaciStatusBar backgroundColor={purple} barStyle="light-content"/>
+                <View style={{flex: 1}}>
+                    <TabNavigation/>
+                </View>
             </Provider>
         )
     }
 }
+
+export default App
