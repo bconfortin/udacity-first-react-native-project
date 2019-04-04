@@ -27,6 +27,7 @@ import {
     purple,
     white
 } from "../utils/colors";
+import {NavigationActions} from 'react-navigation'
 
 const styles = StyleSheet.create({
     container: {
@@ -123,7 +124,7 @@ class AddEntry extends Component {
             eat: 0
         }))
 
-        // TODO: navigate to home
+        this.toHome()
 
         submitEntry({key, entry})
 
@@ -136,12 +137,16 @@ class AddEntry extends Component {
         this.props.dispatch(addEntry({
             [key]: getDailyReminderValue()
         }))
-
-        // TODO: return to home
-
-        // TODO: update db
+ 
+        this.toHome()
 
         removeEntry(key)
+    }
+
+    toHome = () => {
+        this.props.navigation.dispatch(NavigationActions.back({
+            key: 'AddEntry'
+        }))
     }
 
     render() {

@@ -1,19 +1,20 @@
 import React from 'react'
 import {
     createAppContainer,
-    createBottomTabNavigator
+    createBottomTabNavigator,
+    createStackNavigator
 } from 'react-navigation'
-import History from "./History";
+import History from "./History"
 import {
     FontAwesome,
     Ionicons
-} from "@expo/vector-icons";
-import AddEntry from "./AddEntry";
-import {Platform} from "react-native";
+} from "@expo/vector-icons"
+import AddEntry from "./AddEntry"
+import {Platform} from "react-native"
 import {
     purple,
     white
-} from "../utils/colors";
+} from "../utils/colors"
 
 const TabNavigator = createBottomTabNavigator({
     History: {
