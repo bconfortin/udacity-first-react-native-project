@@ -1,19 +1,13 @@
 import React from 'react'
-import {
-    StatusBar,
-    View
-} from 'react-native'
+import {StatusBar, View} from 'react-native'
 import {createStore} from 'redux'
 import {Provider} from 'react-redux'
 import reducer from './reducers'
-import {
-    purple,
-    white
-} from "./utils/colors";
+import {purple, white} from "./utils/colors";
 import TabNavigation from './components/TabNavigation'
 import {Constants} from 'expo'
 import EntryDetails from './components/EntryDetails'
-import {createStackNavigator, createAppContainer} from 'react-navigation'
+import {createAppContainer, createStackNavigator} from 'react-navigation'
 
 const StackNavigator = createStackNavigator({
     Home: {

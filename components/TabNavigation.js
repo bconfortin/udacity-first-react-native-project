@@ -15,6 +15,7 @@ import {
     purple,
     white
 } from "../utils/colors"
+import Live from "./Live";
 
 const TabNavigator = createBottomTabNavigator({
     History: {
@@ -30,6 +31,13 @@ const TabNavigator = createBottomTabNavigator({
             tabBarLabel: 'Add Entry',
             tabBarIcon: ({tintColor}) => <FontAwesome name="plus-square" size={30} color={tintColor}/>
         }
+    },
+    Live: {
+        screen: Live,
+        navigationOptions: {
+            tabBarLabel: 'Live',
+            tabBarIcon: ({ tintColor }) => <Ionicons name='ios-speedometer' size={30} color={tintColor} />
+        }
     }
 }, {
     navigationOptions: {
@@ -41,7 +49,7 @@ const TabNavigator = createBottomTabNavigator({
             height: 56,
             backgroundColor: Platform.OS === 'ios' ? white : purple,
             shadowColor: 'rgba(0, 0, 0, 0.24)',
-            shadowOffse: {
+            shadowOffset: {
                 width: 0,
                 height: 3
             },
